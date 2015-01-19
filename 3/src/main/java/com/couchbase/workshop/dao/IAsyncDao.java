@@ -10,16 +10,16 @@ public interface IAsyncDao {
 
     /**
      * To persist by getting the result asynchronously as Observable
-     * 
-     * @return 
+     *
+     * @return
      */
     public Observable persist();
-    
+
     /**
-     * Tp get the result asynchronously as Observable
-     * @return 
+     * To get the result asynchronously as Observable
+     *
+     * @return
      */
     public Observable get();
-    
-    
+
 }
