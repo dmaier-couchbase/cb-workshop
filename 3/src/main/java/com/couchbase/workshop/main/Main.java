@@ -5,13 +5,13 @@ import com.couchbase.workshop.pojo.User;
 import com.couchbase.workshop.conn.BucketFactory;
 import com.couchbase.workshop.dao.CompanyDao;
 import com.couchbase.workshop.dao.DAOFactory;
-import com.couchbase.workshop.dao.UserDao;
 import com.couchbase.workshop.pojo.Company;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import rx.Observable;
 
 /**
  *
@@ -26,10 +26,11 @@ public class Main {
         AsyncBucket bucket = BucketFactory.getAsyncBucket();
         LOG.log(Level.INFO, "bucket = {0}", bucket.name());
 
-        //Create some users
+        //Show some demos
         demoCreateUsers();
         demoCreateCompany();
         demoAddUserToComp();
+        demoGetComp();
 
         //Wait because the results are returned async.
         Thread.sleep(60000);
@@ -53,18 +54,29 @@ public class Main {
         users.add(mmustermann);
         //...
 
-        for (User user : users) {
-
-            UserDao userDao = DAOFactory.createUserDao(user);
-
-            //Persist the user async.
-            userDao.persist().subscribe(
+        
+        Observable.from(users)
+                .map(
+                    // u -> DAOFactory.createUserDao(u)
+                    DAOFactory::createUserDao
+                )
+                .flatMap(
+          
+                  u -> u.persist()
+                    
+                )
+                .subscribe(
                     (u -> LOG.log(Level.INFO, "Wrote user {0}", u.getUid())),
                     (e -> LOG.log(Level.SEVERE, "Could not write the user!: {0}", e.toString()))
-            );
-
-        }
-
+                );
+                
+                /* FYI: As blocking variant
+                .doOnNext(u -> LOG.log(Level.INFO, "Wrote user {0}", u.getUid()))
+                .doOnError(e -> LOG.log(Level.SEVERE, "Could not write the user!: {0}", e.toString()))
+                .toBlocking()
+                .last();
+                */
+                   
     }
 
     private static void demoCreateCompany() {
@@ -90,23 +102,30 @@ public class Main {
         compDao.get()
                 .map(
                         c -> {
-
+                            
                             List<User> users = new ArrayList<>();
-                            users.add(new User("dmaier", "David", "Maier", "new@couchbase.com", new Date()));
+                            users.add(new User("dmaier", "David", "Maier", "david.new@couchbase.com", new Date()));
+                            users.add(new User("mnitschinger", "Michael", "Nitschinger", "michael.nitschinger@couchbase.com", new Date()));
                             c.setUsers(users);
 
                             return c;
                         })
+                .flatMap(
+                       c -> DAOFactory.createCompanyDao(c).persist())
                 .subscribe(
-                        c2 -> {
-
-                            DAOFactory.createCompanyDao(c2).persist().subscribe(
-                                    c3 -> LOG.log(Level.INFO, "Wrote company {0}", c3.getId()),
-                                    e -> LOG.log(Level.SEVERE, "Could not write the company!: {0}", e.toString())
-                            );
-
-                        },
-                        e -> LOG.log(Level.SEVERE, "Could not get or write the company!: {0}", e.toString())
+                        c -> LOG.log(Level.INFO, "Wrote company {0}", c.getId()),
+                        e -> LOG.log(Level.SEVERE, "Could not write the company!: {0}", e.toString())
                 );
+    }
+    
+    private static void demoGetComp()
+    {
+        Company cb = new Company("couchbase");
+        DAOFactory.createCompanyDao(cb).get().subscribe(
+        
+                 c -> LOG.log(Level.INFO, "Got company {0}", c.getName()),
+                 e -> LOG.log(Level.SEVERE, "Could not get the company!: {0}", e.toString())
+        );
+        
     }
 }

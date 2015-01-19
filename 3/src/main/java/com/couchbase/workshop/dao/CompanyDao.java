@@ -65,49 +65,18 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
 
         //Update all users by using a bulk operation and then update the company
         //FYI: Optional error handling via try-catch for block #1
-        if (company.getUsers().size() > 0) {
-            Observable.from(company.getUsers()).flatMap(
-                    u -> {
-
-                        UserDao userDAO = DAOFactory.createUserDao(u);
-
-                        return userDAO.persist();
-
-                    }
-            ).last().toBlocking().single();
-        }
-
-        return bucket
-                .upsert(doc)
-                .map((JsonDocument resultDoc) -> (Company) fromJson(resultDoc));
-
+       
+        return Observable
+                .from(company.getUsers())
+                .flatMap( u -> DAOFactory.createUserDao(u).persist())
+                .lastOrDefault(null)
+                .flatMap(u -> bucket.upsert(doc))
+                .map(resultDoc -> (Company) fromJson(resultDoc));
     }
 
     /**
      * To get a company with all it's users
      *
-     *
-     * Here the example how to use the outer function not as lamda expression.
-     * ...
-     *
-     * .map(
-     *
-     * new Func1<Company, Company>(){
-     *
-     * public Company call(Company c) {
-     *
-     * for (User user : c.getUsers()) {
-     *
-     * UserDao userDAO = DAOFactory.createUserDao(user);
-     * userDAO.get().subscribe(
-     *
-     * ( u ->
-     * {user.setFirstName(u.getFirstName());user.setLastName(u.getLastName());
-     * user.setEmail(u.getEmail());user.setBirthDay(u.getBirthDay()); } ) ); }
-     *
-     * return c; } }
-     *
-     * );
      *
      * @return
      */
@@ -118,29 +87,21 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
         String id = TYPE + "::" + company.getId();
 
         return bucket.get(id)
-                .map((JsonDocument resultDoc) -> (Company) fromJson(resultDoc))
-                .map(
-                        (Company c) -> {
-
-                            //FYI: Could be also realized as a bulk get
-                            //for each
-                            c.getUsers().stream().forEach((user) -> {
-
-                                UserDao userDAO = DAOFactory.createUserDao(user);
-
-                                userDAO.get().subscribe(
-                                        //Set the properties of the users those are attached to the company
+                .map(resultDoc -> (Company) fromJson(resultDoc))
+                .flatMap(c -> Observable.from(c.getUsers())
+                        .flatMap(user -> DAOFactory.createUserDao(user)
+                                .get()
+                                .doOnNext(
                                         u -> {
                                             user.setFirstName(u.getFirstName());
                                             user.setLastName(u.getLastName());
                                             user.setEmail(u.getEmail());
                                             user.setBirthDay(u.getBirthDay());
                                         }
-                                );
-                            });
-
-                            return c;
-                        }
+                                )
+                        )
+                        .lastOrDefault(null)
+                        .map(u -> c)
                 );
     }
 
