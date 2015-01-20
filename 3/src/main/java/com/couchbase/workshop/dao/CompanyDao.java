@@ -79,9 +79,7 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
 
         JsonDocument doc = toJson(this.company);
 
-        //Update all users by using a bulk operation and then update the company
-        //FYI: Optional error handling via try-catch for block #1
-       
+        //Update all users then update the company
         return Observable
                 .from(company.getUsers())
                 .flatMap( u -> DAOFactory.createUserDao(u).persist())
