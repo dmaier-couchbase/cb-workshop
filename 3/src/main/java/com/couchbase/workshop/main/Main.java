@@ -21,7 +21,10 @@ import com.couchbase.workshop.pojo.User;
 import com.couchbase.workshop.conn.BucketFactory;
 import com.couchbase.workshop.dao.CompanyDao;
 import com.couchbase.workshop.dao.DAOFactory;
+import com.couchbase.workshop.dao.UserDao;
 import com.couchbase.workshop.pojo.Company;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,11 +48,15 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         
+        
         demoConnect();
+        /*
         demoCreateUsers();
         demoCreateCompany();
         demoAddUserToComp();
         demoGetComp();
+        */
+        demoQueryUserByDate();
 
         //Wait because the results are returned async.
         Thread.sleep(60000);
@@ -158,6 +165,10 @@ public class Main {
                 );
     }
     
+    /**
+     * (1) Create a Company DAO in order to get a specific company
+     * (2) Logs the result or the error (when an exception occoured)
+     */
     private static void demoGetComp()
     {
         Company cb = new Company("couchbase");
@@ -167,5 +178,25 @@ public class Main {
                  e -> LOG.log(Level.SEVERE, "Could not get the company!: {0}", e.toString())
         );
         
+    }
+    
+    /**
+     * (1) Create a start and end date to query for
+     * (2) Query by birthday
+     * (3) Logs the result or the error (when an exception occoured)
+     * 
+     * @throws ParseException 
+     */
+    private static void demoQueryUserByDate() throws ParseException  
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date start = sdf.parse("01/01/2015");
+        Date end = sdf.parse("31/12/2020");
+        
+        UserDao.queryByBirthDay(start, end)
+                .subscribe(
+                    u -> LOG.log(Level.INFO, "Got user {0}", u.getFirstName()),
+                    e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
+        );
     }
 }

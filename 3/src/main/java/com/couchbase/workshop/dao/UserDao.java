@@ -18,10 +18,14 @@ package com.couchbase.workshop.dao;
 
 import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.document.JsonDocument;
+import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.view.ViewQuery;
 import com.couchbase.workshop.pojo.User;
 import com.couchbase.workshop.conn.BucketFactory;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import rx.Observable;
 //import rx.functions.Action1;
 //import rx.functions.Func1;
@@ -33,6 +37,8 @@ import rx.Observable;
  */
 public class UserDao extends AJsonSerializable implements IAsyncDao {
 
+    private static final Logger LOG = Logger.getLogger(UserDao.class.getName());
+    
     /**
      * Constants
      */
@@ -44,10 +50,13 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
     public static final String PROP_EMAIL = "email";
     public static final String PROP_BDAY = "bday";
 
+    public static final String DDOC_PERSONS = "persons";
+    public static final String VIEW_BYBIRTHDAY = "by_birthday";
+    
     /**
      * Bucket reference
      */
-    private final AsyncBucket bucket = BucketFactory.getAsyncBucket();
+    private static final AsyncBucket bucket = BucketFactory.getAsyncBucket();
 
     /**
      * Inner object
@@ -155,5 +164,65 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
 
         return tmpUser;
     }
+    
+    /**
+     * A helper method to query for users by birthday
+     * 
+     * The following View needs to be defined:
+     * 
+     * function (doc, meta) {
+     *
+     *   if (doc.type == "user")
+     *   {
+     *       if ( typeof doc.bday != undefined)
+     *       {
+     *           emit(dateToArray(doc.bday), {"firstname" : doc.firstname, "lastname" : doc.lastname});  
+     *       }
+     *   }
+     *
+     *  }
+     * 
+     * @param from
+     * @param to
+     * @return 
+     */
+    public static Observable<User> queryByBirthDay(Date from, Date to)
+    {
+        //Prepare the query
+        ViewQuery q = ViewQuery.from(DDOC_PERSONS, VIEW_BYBIRTHDAY);
+        
+        if (from != null)
+            q = q.startKey(dateToDateArr(from));
+     
+        if (to != null)
+            q = q.endKey(dateToDateArr(to));
+        
+        return  
+              bucket.query(q)  
+              .flatMap(r -> r.rows())
+              .flatMap(row -> row.document())
+              .map(d -> d.id())
+              .map(i -> i.split("::")[1])
+              .flatMap(i -> DAOFactory.createUserDao(i).get());             
+    }
 
+    /**
+     * Helper to convert a Java date into a JSON date array
+     * 
+     * @param date 
+     */
+    private static JsonArray dateToDateArr(Date date)
+    {
+        JsonArray arr = JsonArray.empty();
+        
+        arr.add(date.getYear() + 1900);
+        arr.add(date.getMonth() + 1);
+        arr.add(date.getDate());
+        arr.add(date.getHours());
+        arr.add(date.getMinutes());
+        arr.add(date.getSeconds());
+        
+        
+        return arr;
+    }
 }

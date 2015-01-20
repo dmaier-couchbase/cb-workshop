@@ -53,7 +53,7 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
     /**
      * Bucket reference
      */
-    private final AsyncBucket bucket = BucketFactory.getAsyncBucket();
+    private final static AsyncBucket bucket = BucketFactory.getAsyncBucket();
 
     /**
      * Company reference
