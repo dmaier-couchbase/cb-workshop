@@ -1,3 +1,19 @@
+ /*
+  * Copyright 2015 Couchbase, Inc.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *      http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
+
 package com.couchbase.workshop.main;
 
 import com.couchbase.client.java.AsyncBucket;
@@ -83,8 +99,8 @@ public class Main {
                     
                 )
                 .subscribe(
-                    (u -> LOG.log(Level.INFO, "Wrote user {0}", u.getUid())),
-                    (e -> LOG.log(Level.SEVERE, "Could not write the user!: {0}", e.toString()))
+                    u -> LOG.log(Level.INFO, "Wrote user {0}", u.getUid()),
+                    e -> LOG.log(Level.SEVERE, "Could not write the user!: {0}", e.toString())
                 );
                 
                 /* FYI: As blocking variant
@@ -105,8 +121,8 @@ public class Main {
 
         Company comp = new Company("couchbase", "Couchbase Ltd.", "Couchbase Ltd. Address");
         DAOFactory.createCompanyDao(comp).persist().subscribe(
-                (c -> LOG.log(Level.INFO, "Wrote company {0}", c.getId())),
-                (e -> LOG.log(Level.SEVERE, "Could not write the company!: {0}", e.toString()))
+                c -> LOG.log(Level.INFO, "Wrote company {0}", c.getId()),
+                e -> LOG.log(Level.SEVERE, "Could not write the company!: {0}", e.toString())
         );
 
     }
