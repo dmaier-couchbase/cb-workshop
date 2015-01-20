@@ -50,12 +50,10 @@ public class Main {
         
         
         demoConnect();
-        /*
         demoCreateUsers();
         demoCreateCompany();
         demoAddUserToComp();
         demoGetComp();
-        */
         demoQueryUserByDate();
 
         //Wait because the results are returned async.

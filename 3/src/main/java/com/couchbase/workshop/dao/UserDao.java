@@ -24,7 +24,6 @@ import com.couchbase.client.java.view.ViewQuery;
 import com.couchbase.workshop.pojo.User;
 import com.couchbase.workshop.conn.BucketFactory;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import rx.Observable;
 //import rx.functions.Action1;
