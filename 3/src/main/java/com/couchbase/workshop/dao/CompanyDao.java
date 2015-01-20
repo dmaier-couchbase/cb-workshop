@@ -89,16 +89,13 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
         return bucket.get(id)
                 .map(resultDoc -> (Company) fromJson(resultDoc))
                 .flatMap(c -> Observable.from(c.getUsers())
-                        .flatMap(user -> DAOFactory.createUserDao(user)
-                                .get()
-                                .doOnNext(
-                                        u -> {
-                                            user.setFirstName(u.getFirstName());
-                                            user.setLastName(u.getLastName());
-                                            user.setEmail(u.getEmail());
-                                            user.setBirthDay(u.getBirthDay());
-                                        }
-                                )
+                        .flatMap(user -> DAOFactory.createUserDao(user).get()
+                                .doOnNext(u -> {
+                                    user.setFirstName(u.getFirstName());
+                                    user.setLastName(u.getLastName());
+                                    user.setEmail(u.getEmail());
+                                    user.setBirthDay(u.getBirthDay());
+                                })
                         )
                         .lastOrDefault(null)
                         .map(u -> c)

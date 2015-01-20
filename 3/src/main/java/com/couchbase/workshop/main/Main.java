@@ -21,12 +21,15 @@ public class Main {
 
     public static final Logger LOG = Logger.getLogger(Main.class.getName());
 
+    /**
+     * Main entry point of the application
+     * 
+     * @param args
+     * @throws Exception 
+     */
     public static void main(String[] args) throws Exception {
-        //Connecting
-        AsyncBucket bucket = BucketFactory.getAsyncBucket();
-        LOG.log(Level.INFO, "bucket = {0}", bucket.name());
-
-        //Show some demos
+        
+        demoConnect();
         demoCreateUsers();
         demoCreateCompany();
         demoAddUserToComp();
@@ -37,9 +40,23 @@ public class Main {
     }
 
     /**
-     * This just show how to perform a write operation. At this point this is
-     * NOT a bulk operation.
-     *
+     * (1) Establishes a connection by creating an async bucket via the 
+     * previously implemented BucketFactory
+     * (2) Logs out the bucket name
+     */
+    private static void demoConnect()
+    {
+        AsyncBucket bucket = BucketFactory.getAsyncBucket();
+        LOG.log(Level.INFO, "bucket = {0}", bucket.name());
+    }
+    
+    /**
+     * (1) Creates a list of Users
+     * (2) Creates a new Observable from the User list
+     * (3) Transforms the User to a UserDAO
+     * (4) Persists all users by using the UserDAO
+     * (5) Logs the result or the error (when an exception occourred)
+     * 
      */
     private static void demoCreateUsers() {
         LOG.info("DEMO - Create user");
@@ -57,7 +74,7 @@ public class Main {
         
         Observable.from(users)
                 .map(
-                    // u -> DAOFactory.createUserDao(u)
+                    // Same as: u -> DAOFactory.createUserDao(u)
                     DAOFactory::createUserDao
                 )
                 .flatMap(
@@ -79,20 +96,27 @@ public class Main {
                    
     }
 
+    /**
+     * (1) Persists a company by using a CompanyDAO
+     * (2) Logs the result or the error (when an exception occourred)
+     */
     private static void demoCreateCompany() {
         LOG.info("DEMO - Create company");
 
         Company comp = new Company("couchbase", "Couchbase Ltd.", "Couchbase Ltd. Address");
-
-        CompanyDao compDao = DAOFactory.createCompanyDao(comp);
-
-        compDao.persist().subscribe(
+        DAOFactory.createCompanyDao(comp).persist().subscribe(
                 (c -> LOG.log(Level.INFO, "Wrote company {0}", c.getId())),
                 (e -> LOG.log(Level.SEVERE, "Could not write the company!: {0}", e.toString()))
         );
 
     }
 
+    /**
+     * (1) Gets a company by using a CompanyDAO
+     * (2) Then adds some users to the returned company
+     * (3) Persists the modified company by using a CompanyDAO
+     * (4) Logs the result or the error (when an exception occoured)
+     */
     private static void demoAddUserToComp() {
         LOG.info("DEMO - Add user to company");
 
