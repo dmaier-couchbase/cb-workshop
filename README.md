@@ -15,3 +15,32 @@ For the second workshop days the following is required:
 * Git client
 
 For both days internet access is required in order to get access to the workshop code repository and other resources.
+
+## Agenda
+
+* Day 1
+
+| Time           | Topic                           |
+| -------------- | ------------------------------- |
+| 09:00          | Introduction and Core Use Cases |
+|                | Overview of the Couchbase Server 3.0 Architecture |
+|                | Couchbase Server as a Distributed Systeme |
+| 10:30          | Coffee Break |
+|                | Working with Buckets |
+|                | Working with the Cluster |
+| 12:30          | Lunch |
+|                | Backup and Restore |
+|                | Cross Data Center Replication explained |
+| 17:00          | Q&A and Summary |
+
+* Day 2
+
+| Time           | Topic                           |
+| -------------- | ------------------------------- |
+| 09:00          | Document Modelling Basics |
+|                | The Observer Pattern and RxJava |
+| 10:30          | Coffee Break |
+|                | The 2.x Java API |
+| 12:30          | Lunch |
+|                | Hands-on |
+| 17:00          | Q&A and Summary |
