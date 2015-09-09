@@ -38,9 +38,50 @@ For both days internet access is required in order to get access to the workshop
 | Time           | Topic                           |
 | -------------- | ------------------------------- |
 | 09:00          | Document Modelling Basics |
+|                | Querying via Views |
 |                | The Observer Pattern and RxJava |
 | 10:30          | Coffee Break |
 |                | The 2.x Java API |
 | 12:30          | Lunch |
 |                | Hands-on |
-| 17:00          | Q&A and Summary |
+| 17:00          | Q&A and Summary, What's new in 4.0 |
+
+## Exercises
+
+### Day 1: Couchbase Architecture and Administration Basics
+
+| #               | Title                                  | Content                                      | 
+| --------------- | -------------------------------------- | -------------------------------------------- |
+| 1               | Installation and Configuration         | Disable Swappines | 
+|                 |                                        | Disable the Linux Firewall |
+|                 |                                        | Download and Install Couchbase |
+|                 |                                        | Configure the Cluster |
+| 2               | Testing the Installation               | List the nodes of your current cluster |
+|                 |                                        | Investigate the data and index directory |
+|                 |                                        | Get some data from a vBucket file |
+|                 |                                        | Get some info about a vBucket file |
+|                 |                                        | Install Telnet |
+|                 |                                        | Retrieve some statistics via Telnet |
+|                 |                                        | Set/get a value via Telnet |
+|                 |                                        | Install Curl |
+|                 |                                        | Get details via the REST API |
+| 3               | Working with Buckets                   | Create a Bucket via the UI |
+|                 |                                        | Add a document to the Bucket |
+|                 |                                        | Create a Bucket via the CLI|
+| 4               | Working with the Cluster               | Add/remove nodes via the UI|
+|                 |                                        | Rebalance|
+|                 |                                        | Add/remove nodes via the CLI |
+| 5               | Backup/Restore                         | Use cbbackup to backup a Bucket|
+|                 |                                        | Use cbrestore to restore to another Bucket|
+| 6               | XDCR                                   | Create an XDCR link via the UI |
+
+### Day 2: Using the Couchbase Java 2.x Client Library
+
+The starting point for the day 2 execises is the '1' folder. This is basically an empty application skeleton. Folder '2' is a bit more progressed. The final solution can be found in folder '3'.
+
+| #               | Title                                  | Content                                      | 
+| --------------- | -------------------------------------- | -------------------------------------------- |
+| 7               | Project Setup                          | Maven Dependencies | 
+| 8               | Connection Management                  | ConnectionFactory, Singleton approach |
+| 9               | CRUD Operations                        | Create Documents, Reference Documents, Get Documents |
+| 12              | Querying via Views                     | Create a Design Document, Create View, Query via the Browser and Client |
