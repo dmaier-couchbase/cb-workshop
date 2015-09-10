@@ -56,7 +56,14 @@ public class CouchbaseConfig extends BaseConfig {
     }
     
     public String getPassword() {
-        return this.props.getProperty("cb.con.bucket.pwd");
+        this.password = this.props.getProperty("cb.con.bucket.pwd"); 
+        return this.password;
     }
+    
+    public boolean  isQueryEnabled()
+    {
+        return Boolean.parseBoolean(this.props.getProperty("cb.con.query.enabled"));
+    }
+           
     
 }

@@ -50,12 +50,19 @@ public class Main {
         
         
         demoConnect();
-        demoCreateUsers();
-        demoCreateCompany();
-        demoAddUserToComp();
+        
+        //demoCreateUsers();
+        
+        //demoCreateCompany();
+        
+        //demoAddUserToComp();
+        
         demoGetComp();
         demoQueryUserByDate();
+       
+        //demoQueryWithN1QL();
 
+        
         //Wait because the results are returned async.
         Thread.sleep(60000);
     }
@@ -69,7 +76,23 @@ public class Main {
     {
         AsyncBucket bucket = BucketFactory.getAsyncBucket();
         LOG.log(Level.INFO, "bucket = {0}", bucket.name());
+        
     }
+    
+    public static void compareBulk()
+    {
+       List<String> items = new ArrayList();
+       
+        for (int i = 0; i < 10000; i++) {
+            
+            items.add("s_" + i);
+        }
+        
+        //Observable.from(items).flatMap()
+
+          
+    }
+    
     
     /**
      * (1) Creates a list of Users
@@ -197,4 +220,19 @@ public class Main {
                     e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
         );
     }
+    
+    /**
+     * (1) Query by name
+     * (2) Logs the result or the error (when an exception occoured)
+     
+    private static void demoQueryWithN1QL() 
+    {
+       UserDao.queryByName("Maier")
+               .subscribe(
+         
+                    s -> LOG.log(Level.INFO, "Result {0}", s) ,
+                    e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
+               
+       );
+    }*/
 }

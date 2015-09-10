@@ -51,12 +51,21 @@ public class BucketFactory {
     
     public static Bucket createBucketCon()
     {
+        
 
         CouchbaseConfig cfg = ConfigManager.getCBConfig();
         
         Cluster cluster = ClusterFactory.getCluster();
-        bucket = cluster.openBucket(cfg.getBucket(), cfg.getPassword());
-        
+       
+        if (cfg.getPassword() != null && !cfg.getPassword().equals(""))
+        {
+            bucket = cluster.openBucket(cfg.getBucket(), cfg.getPassword());
+        }
+        else
+        {
+            bucket = cluster.openBucket(cfg.getBucket());
+        }
+       
         return bucket;
     }
 }

@@ -94,7 +94,8 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
 
         JsonDocument doc = toJson(this.user);
 
-        return bucket.upsert(doc).map((JsonDocument resultDoc) -> (User) fromJson(resultDoc));
+        return bucket.upsert(doc)
+                     .map(resultDoc -> (User) fromJson(resultDoc));
     }
 
     /**
@@ -108,7 +109,7 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
         String key = TYPE + "::" + user.getUid();
 
         return bucket.get(key)
-                .map((JsonDocument resultDoc) -> (User) fromJson(resultDoc));
+                .map( resultDoc -> (User) fromJson(resultDoc));
 
         //Optionally handle errors here by using on of the onError* functions
         //https://github.com/ReactiveX/RxJava/wiki/Error-Handling-Operators
@@ -188,7 +189,7 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
     public static Observable<User> queryByBirthDay(Date from, Date to)
     {
         //Prepare the query
-        ViewQuery q = ViewQuery.from(DDOC_PERSONS, VIEW_BYBIRTHDAY);
+        ViewQuery q = ViewQuery.from(DDOC_PERSONS, VIEW_BYBIRTHDAY).reduce(false);
         
         if (from != null)
             q = q.startKey(dateToDateArr(from));
@@ -224,4 +225,30 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
         
         return arr;
     }
+    
+    /**
+     * A helper method to query by name
+     * 
+     * The following index is required: CREATE PRIMARY INDEX ON workshop
+     * 
+     * @param name
+     * @return 
+     */
+    /*
+    public static Observable<String> queryByName(String name)
+    {
+        StringBuilder q = new StringBuilder("SELECT * FROM workshop");
+        q.append(" WHERE ");
+        q.append(PROP_LASTNAME);
+        q.append(" = ");
+        q.append("'");
+        q.append(name);
+        q.append("'");
+               
+        return bucket.query(q.toString())
+              .flatMap(r -> r.rows())
+              .map(row -> row.value())
+              .map(v -> v.toString());
+             
+    }*/
 }

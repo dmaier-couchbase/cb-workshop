@@ -18,6 +18,8 @@ package com.couchbase.workshop.conn;
 
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
+import com.couchbase.client.java.env.CouchbaseEnvironment;
+import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import com.couchbase.workshop.cfg.ConfigManager;
 import java.util.Arrays;
 import java.util.List;
@@ -41,11 +43,19 @@ public class ClusterFactory {
     
     public static Cluster createCluster()
     {
+        //Enable N1QL
+        if (ConfigManager.getCBConfig().isQueryEnabled())
+            System.setProperty("com.couchbase.queryEnabled", "true");
+        
+        //Create the cluster reference
         String[] hosts = ConfigManager.getCBConfig().getHosts();
         
         List<String> nodes = Arrays.asList(hosts);
+                          
+        CouchbaseEnvironment env = DefaultCouchbaseEnvironment.builder().kvEndpoints(2).viewEndpoints(2).build();
       
-        cluster = CouchbaseCluster.create(nodes); 
+        cluster = CouchbaseCluster.create(env, nodes);
+        
         
         return cluster;
     }
