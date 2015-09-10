@@ -1,5 +1,5 @@
 
-package com.couchbase.workshop.con;
+package com.couchbase.workshop.conn;
 
 import com.couchbase.client.java.CouchbaseCluster;
 
