@@ -49,7 +49,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         
-        demoConnect();
+        //demoConnect();
         
         //demoCreateUsers();
         
@@ -57,8 +57,8 @@ public class Main {
         
         //demoAddUserToComp();
         
-        demoGetComp();
-        demoQueryUserByDate();
+        //demoGetComp();
+        //demoQueryUserByDate();
        
         //demoQueryWithN1QL();
 
@@ -78,22 +78,7 @@ public class Main {
         LOG.log(Level.INFO, "bucket = {0}", bucket.name());
         
     }
-    
-    public static void compareBulk()
-    {
-       List<String> items = new ArrayList();
-       
-        for (int i = 0; i < 10000; i++) {
-            
-            items.add("s_" + i);
-        }
-        
-        //Observable.from(items).flatMap()
-
-          
-    }
-    
-    
+      
     /**
      * (1) Creates a list of Users
      * (2) Creates a new Observable from the User list
