@@ -16,6 +16,18 @@ For the second workshop days the following is required:
 
 For both days internet access is required in order to get access to the workshop code repository and other resources.
 
+### VM Setup
+
+The following instructions can be used in order to set up the workshop VM-s:
+
+#### Couchbase Server Instances
+
+TODO
+
+#### Development Instance
+
+TODO
+
 ## Agenda
 
 * Day 1
