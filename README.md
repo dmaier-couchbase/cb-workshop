@@ -77,9 +77,11 @@ We are using the following versions of Software for these preperations:
     * Click on 'Edit'
     * Go to the tab 'IPv4 Settings'
     * Choose 'Manual' as the method
-    * Add the address '$previous_ip/255.255.255.0/$previous_gw'
+    * Add the address '${previous_ip}+10/255.255.255.0/$previous_gw'! If the IP ${previous_ip}+10 is already taken then assign the next one.
+       * ${previus_ip}+10 means that you use 10.0.2.25 instead of 10.0.2.15 
     * Use the $previous_dns as DNS server
     * Reboot and test if you can still access the machine via SSH and if you can still ping the outside world from the machine
+       * If the port forwarding is no longer working then you might have to adapt it regarding the new static guest IP 
 * In the VM download additional dependencies
   * Execute 'yum install openssl'
   * The package 'wget' is already installed
