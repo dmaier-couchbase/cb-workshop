@@ -27,8 +27,26 @@ We are using the following versions of Software for these preperations:
 
 #### Couchbase Server Instances
 
-TODO
-
+* Download the CentOS image
+* Create a new VirtualBox VM with 
+  * the name 'CentOS6-DCJW-Node1' 
+  * with the type Linux/Red Hat (64 bit)
+  * with 2048MB RAM
+  * an empty HDD
+  * with a VDMI disk format
+  * and a dynamically allocated size of 20GB
+* Change the settings
+  * Network: The first network adapter uses NAT
+  * Storage: Choose the CentOS iso image as a CDROM drive
+* Start the VM
+* Install CentOS 6
+  * Select 'Install text mode' in the boot menu
+  * Choose the installation language as 'English'
+  * Choose the keyboard layout
+  * Select 'Re-initialize all'
+  * Choose the time zone
+  * 
+  
 #### Development Instance
 
 TODO
