@@ -82,4 +82,12 @@ We are using the following versions of Software for these preperations:
   
 ## Development Instance
 
-TODO
+* Perform the same steps as for the Couchbase Server VM-s BUT
+   * Name the machine CentOS6-DCJW-Dev 
+   * By performing a graphical installation this time, which means not to choose 'Install text mode' but just 'Install'
+   * Create an user 'couchbase' with password 'couchbase' as part of the setup wizard 
+   * Don't download the same dependencies, other software will be installed
+   * It's especially important that the Development machine is in the same NAT and host-only network
+* Install the Development environment
+   * TODO 
+   * 
