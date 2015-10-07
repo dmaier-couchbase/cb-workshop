@@ -24,19 +24,21 @@ We are using the following versions of Software for these preperations:
 
 * VirtualBox >4.3: https://www.virtualbox.org/wiki/Downloads
 * CentOS 6.7: http://mirror2.hs-esslingen.de/centos/6.7/isos/x86_64/CentOS-6.7-x86_64-LiveCD.iso
+* Couchbase: http://packages.couchbase.com/releases/4.0.0/couchbase-server-enterprise-4.0.0-centos6.x86_64.rpm
 
-#### Couchbase Server Instances
+#### Couchbase Server Instance $i
 
+* ${i} is the Id of the instance, so ${i} from [1,2,3]
 * Download the CentOS image
 * Create a new VirtualBox VM with 
-  * the name 'CentOS6-DCJW-Node1' 
+  * the name 'CentOS6-DCJW-Node${i}' 
   * with the type Linux/Red Hat (64 bit)
   * with 2048MB RAM
   * an empty HDD
   * with a VDMI disk format
   * and a dynamically allocated size of 20GB
 * Change the settings
-  * Network: The first network adapter uses NAT
+  * Network: The first network adapter uses 'NAT'
   * Storage: Choose the CentOS iso image as a CDROM drive
 * Start the VM
 * Install CentOS 6
@@ -44,8 +46,48 @@ We are using the following versions of Software for these preperations:
   * Choose the installation language as 'English'
   * Choose the keyboard layout
   * Select 'Re-initialize all'
-  * Choose the time zone
-  * 
+  * Pick a time zone
+  * Enter the root password 'couchbase' twice
+  * Use the entire drive and write the changes to disk
+  * Wait until the installation completed
+* Change the settings again 
+  * Storage: Disabling the CDROM drive
+  * Network: Enable port forwarding by mapping the host port 9${i}22 to the guest port 22
+  * Network: Enable port forwarding by mapping the host port 9${i}91 to the guest port 8091
+  * Network: Enable port forwarding by mapping the host port 9${i}59 to the guest port 5901
+* Start the VM and wait until started
+* Quit the setup wizard
+* Log-in to the CLI as root
+* Configure and check the network
+  * Get the current network settings
+    * Did you get an IP address assigned? Check via 'ifconfig' and note it as $previous_ip!
+    * Get the current name sever by using 'cat /etc/resolv.conf' and note it as $previous_dns!
+    * Use the command 'route' to find out what the default gateway is and note it as $previous_gw!
+  * Enable Connectivity
+    * Enable 'sshd' by executing 'chkconfig sshd on' and then reboot
+    * Make sure that the Firewall is temp. disabled '/etc/init.d/iptables stop'
+    * Try to connect via ssh or Putty 'ssh root@$vm_host -p 9${i}22'
+    * Run 'vncserver' and use 'couchbase' as the password
+  * Configure a static IP
+    * If you installed from the LiveDVD then NetworkManager is used for the network configuration
+    * Check if NetworkManager is running by executing 'service NetworkManager status'
+    * Connect with a VNCClient to $vm_host:9${i}59
+    * Go to the NetworkManager icon in the upper right corner and right click on it
+    * Choose 'Edit Connections'
+    * Click on 'Edit'
+    * Go to the tab 'IPv4 Settings'
+    * Choose 'Manual' as the method
+    * Add the address '$previous_ip/255.255.255.0/$previous_gw'
+    * Use the $previous_dns as DNS server
+    * Reboot and test if you can still access the machine via SSH and if you can still ping the outside world from the machine
+* In the VM download additional dependencies
+  * Execute 'yum install openssl'
+  * The package 'wget' is already installed
+  * Download the Couchbase Server RPM and place it under '/root/Downloads' by using wget
+
+```
+wget 
+```
   
 #### Development Instance
 
