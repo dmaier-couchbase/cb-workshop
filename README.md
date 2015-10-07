@@ -85,9 +85,6 @@ We are using the following versions of Software for these preperations:
   * The package 'wget' is already installed
   * Download the Couchbase Server RPM and place it under '/root/Downloads' by using wget
 
-```
-wget 
-```
   
 #### Development Instance
 
