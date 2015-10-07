@@ -63,7 +63,7 @@ We are using the following versions of Software for these preperations:
     * Did you get an IP address assigned? Check via 'ifconfig' and note it as $previous_ip!
     * Get the current name sever by using 'cat /etc/resolv.conf' and note it as $previous_dns!
     * Use the command 'route' to find out what the default gateway is and note it as $previous_gw!
-  * Enable Connectivity
+  * Enable connectivity
     * Enable 'sshd' by executing 'chkconfig sshd on' and then reboot
     * Make sure that the Firewall is temp. disabled '/etc/init.d/iptables stop'
     * Try to connect via ssh or Putty 'ssh root@$vm_host -p 9${i}22'
