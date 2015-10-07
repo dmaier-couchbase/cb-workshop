@@ -35,6 +35,7 @@ We are using the following versions of Software for these preperations:
 * Change the settings again 
   * Storage: Disabling the CDROM drive
   * Network: Enable port forwarding by mapping the host port 9${i}22 to the guest port 22
+  * Network: Enable port forwarding by mapping the host port 9${i}91 to the guest port 8091
   * Network: Enable port forwarding by mapping the host port 9${i}59 to the guest port 5901
 * Start the VM and wait until started
 * Quit the setup wizard
