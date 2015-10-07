@@ -18,7 +18,12 @@ For both days internet access is required in order to get access to the workshop
 
 ### VM Setup
 
-The following instructions can be used in order to set up the workshop VM-s:
+The following instructions can be used in order to set up the workshop VM-s. 
+
+We are using the following versions of Software for these preperations:
+
+* VirtualBox >4.3: https://www.virtualbox.org/wiki/Downloads
+* CentOS 6.7: http://mirror2.hs-esslingen.de/centos/6.7/isos/x86_64/CentOS-6.7-x86_64-LiveCD.iso
 
 #### Couchbase Server Instances
 
