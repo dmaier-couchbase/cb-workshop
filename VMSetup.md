@@ -190,6 +190,22 @@ which java
 java -version
 ```
 
+### Git and the Workshop Source Code
+
+Git is available via the standard repository. So just execute the following command as root in order to install it:
+
+```
+yum install git
+```
+
+Then log-in as user 'couchbase' via the graphical user interface and clone the workshop code.
+
+```
+mkdir /home/couchbase/Git
+cd /home/couchbase/Git
+git clone https://github.com/dmaier-couchbase/cb-workshop.git
+```
+
 ### Netbeans
 
 Download the Netbeans 8.0.2 from their web site and save it under '/root/Downloads':
@@ -216,6 +232,23 @@ A graphical installation wizard is started
 * Keep the default settings for Glassfish and click on 'Next'
 * Click on 'Install'
 * Wait until the installation is finished
+* Click on 'Finish'
+
+Now log-in via the graphical user interface as user 'couchbase' and start Netbeans via the start menu.
+
+* Applications -> Programming -> Netbeans
+* File -> Open Project
+* Navigate to /home/couchbase/Git/cb-workshop
+* Select folder '3'
+* Click on 'Open Project'
+* Wait a moment until the Netbeans project is initialized
+* Netbeans comes with Maven so this is automatically recognized as a Maven project
+* Right click on it and select 'Clean and Build'
+* This downloads all the dependencies to the Maven cache
+* The build should complete with 'BUILD SUCCESS'
+* Close the project again!
+* Close Netbeans!
+
 
 
 
