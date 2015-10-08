@@ -21,7 +21,7 @@ Please see the file [VMSetup](https://github.com/dmaier-couchbase/cb-workshop/bl
 ## Agenda
 
 * Day 1
-* 
+
 | Time            | Title                                   | 
 | --------------- |  ---------------------------------------|
 | 09:00           | Introduction and Core Use Cases         |
