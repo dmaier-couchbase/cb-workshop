@@ -10,6 +10,8 @@ We are using the following versions of Software for these preperations:
 
 ## Couchbase Server Instance $i
 
+### VM Installation
+
 * ${i} is the Id of the instance, so ${i} from [1,2,3]
 * Download the CentOS image
 * Create a new VirtualBox VM with 
@@ -19,7 +21,7 @@ We are using the following versions of Software for these preperations:
   * an empty HDD
   * with a VDMI disk format
   * and a dynamically allocated size of 20GB
-* Change the settings
+* Change the VM settings
   * Network: The first network adapter uses 'NAT'
   * Storage: Choose the CentOS iso image as a CDROM drive
 * Start the VM
@@ -32,14 +34,19 @@ We are using the following versions of Software for these preperations:
   * Enter the root password 'couchbase' twice
   * Use the entire drive and write the changes to disk
   * Wait until the installation completed
-* Change the settings again 
+  * Power off the machine after the installation
+* Change VM the settings again 
   * Storage: Disabling the CDROM drive
-  * Network: Enable port forwarding by mapping the host port 9${i}22 to the guest port 22
-  * Network: Enable port forwarding by mapping the host port 9${i}91 to the guest port 8091
-  * Network: Enable port forwarding by mapping the host port 9${i}59 to the guest port 5901
 * Start the VM and wait until started
 * Quit the setup wizard
 * Log-in to the CLI as root
+
+### Network config
+
+* Change the VM settings for the NAT network
+  * Network: Enable port forwarding by mapping the host port 9${i}22 to the guest port 22
+  * Network: Enable port forwarding by mapping the host port 9${i}91 to the guest port 8091
+  * Network: Enable port forwarding by mapping the host port 9${i}59 to the guest port 5901
 * Configure and check the network
   * Get the current network settings
     * Did you get an IP address assigned? Check via 'ifconfig' and note it as $previous_ip!
