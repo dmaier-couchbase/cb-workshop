@@ -12,7 +12,10 @@ We are using the following versions of Software for these preperations:
 
 ### VM Installation
 
-* ${i} is the Id of the instance, so ${i} from [1,2,3]
+The place holder ${i} is the id of the instance. We need 3 VM-s for the workshop, so ${i} is from [1,2,3].
+
+Please perform the following steps in order to provide a CentOS6 VM:
+
 * Download the CentOS image
 * Create a new VirtualBox VM with 
   * the name 'CentOS6-DCJW-Node${i}' 
@@ -36,12 +39,16 @@ We are using the following versions of Software for these preperations:
   * Wait until the installation completed
   * Power off the machine after the installation
 * Change VM the settings again 
-  * Storage: Disabling the CDROM drive
+  * Storage: Disabling the CDROM drive by removing the image
 * Start the VM and wait until started
-* Quit the setup wizard
+* Quit the initial setup wizard
 * Log-in to the CLI as root
 
 ### Network config
+
+The network configuration is a bit more complicated with Virtualbox. What we need is a VM which can reach the outside world and which can be reached from the outside world. In order to achieve this we will need to define in sum 2 virtual networks for our VM. So far we already have defined the NAT (Network Address Translation) network. NAT allows to access the outside workd from a VM. Imagine that your VM is connected to a service which acts like a router whereby the VM can reach the outside world bit can NOT be reached from the outside world or from other VM-s. In order to enable access from the outside world via NAT port forwarding can be used. So to simplify further configuration steps it makes sense to allow the access from the outside world to the VM via NAT and port forwarding. Under the network settings of the VM's NAT network define the following port forwardings:
+
+TODO
 
 * Change the VM settings for the NAT network
   * Network: Enable port forwarding by mapping the host port 9${i}22 to the guest port 22
