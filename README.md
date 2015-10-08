@@ -21,21 +21,19 @@ Please see the file [VMSetup](https://github.com/dmaier-couchbase/cb-workshop/bl
 ## Agenda
 
 * Day 1
-
-* Day 1: Couchbase Architecture and Administration Basics
-
-| Time            | Title                                   | Content                                          |
-| --------------- |  --------------------------------------- | ------------------------------------------------ |
-| 09:00           | Introduction and Core Use Cases         | What is Couchbase Server?                        |
-|                 | Couchbase Server Architecture           | Caching Layer, Storage Engine, CM                |
-|                 | Couchbase Server as a Distributed System| Intra-Cluster Replication, Consistency, Sharding |
-| 10:30           | Coffee Break                            |                                                  |
-|                 | Working with Buckets                    | Create Bucket, add Data                          |
-|                 | Working with the Cluster                | Add/remove Nodes, Server Groups, Rebalance       |
-| 12:30           | Lunch                                   |                                                  |
-|                 | Security                                | Encrytion, LDAP Integration, Configuration       |
-|                 | Cross Data Center Replication explained | Setup, Configuration Parameters                  |
-| 17:00           | Q&A and Summary                         |                                                  |
+* 
+| Time            | Title                                   | 
+| --------------- |  ---------------------------------------|
+| 09:00           | Introduction and Core Use Cases         |
+|                 | Couchbase Server Architecture           |
+|                 | Couchbase Server as a Distributed System|
+| 10:30           | Coffee Break                            |
+|                 | Working with Buckets                    |
+|                 | Working with the Cluster                |
+| 12:30           | Lunch                                   |
+|                 | Security                                |
+|                 | Cross Data Center Replication explained |
+| 17:00           | Q&A and Summary                         |
 
 * Day 2
 
