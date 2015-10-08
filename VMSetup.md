@@ -47,7 +47,7 @@ Please perform the following steps in order to provide a CentOS6 VM:
 * Quit the initial setup wizard
 * Log-in to the CLI as root
 
-### Network config
+### Network Configuration
 
 The network configuration is a bit more complicated with Virtualbox. What we need is a VM which can reach the outside world and which can be reached from the outside world. Additionally each VM needs to be able to reach each other VM. In order to achieve this we will need to define in sum 2 virtual networks for our VM. So far we already have defined the NAT (Network Address Translation) network. NAT allows to access the outside workd from a VM. Imagine that your VM is connected to a service which acts like a router whereby the VM can reach the outside world but can NOT be reached from the outside world or from other VM-s. First let's check if yor CentOS6 instance has an IP for the NAT network:
 
