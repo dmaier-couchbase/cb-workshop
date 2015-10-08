@@ -95,7 +95,7 @@ The next step is to allow the machine to be connected by other machines in the n
 * If there is no global host-only network then you need to create it via the general Virtualbox preferences
 * Power on the maching
 
-Your VM has not 2 network cards. Given that you installed from the LiveCD by default NetworkManager is used. Check if NetworkManager is running by executing:
+Your VM has now 2 network cards. Given that you installed from the LiveCD, by default NetworkManager is used. Check if NetworkManager is running by executing:
 
 ```
 service NetworkManager status
@@ -103,9 +103,18 @@ service NetworkManager status
 
 We need to make sure that our VM uses a static IP address in the host-only network. Before we do this let's find out the current network settings:
   
-* Did you get an IP address assigned? Check via 'ifconfig' and note it as $previous_ip!
-* Get the current name sever by using 'cat /etc/resolv.conf' and note it as $previous_dns!
-* Use the command 'route' to find out what the default gateway is and note it as $previous_gw!
+* Note the previous IP as $previous_ip!
+```
+/sbin/ifconfig
+```
+* Get the current DNS configuration and note it as $previous_dns!
+```
+cat /etc/resolv.conf
+```
+* Find out what the default gateway is and note it as $previous_gw!
+```
+route
+```
  
 NetworkManager is best configured via the UI.
 
