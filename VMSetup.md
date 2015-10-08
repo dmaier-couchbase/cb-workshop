@@ -46,14 +46,24 @@ Please perform the following steps in order to provide a CentOS6 VM:
 
 ### Network config
 
-The network configuration is a bit more complicated with Virtualbox. What we need is a VM which can reach the outside world and which can be reached from the outside world. In order to achieve this we will need to define in sum 2 virtual networks for our VM. So far we already have defined the NAT (Network Address Translation) network. NAT allows to access the outside workd from a VM. Imagine that your VM is connected to a service which acts like a router whereby the VM can reach the outside world bit can NOT be reached from the outside world or from other VM-s. In order to enable access from the outside world via NAT port forwarding can be used. So to simplify further configuration steps it makes sense to allow the access from the outside world to the VM via NAT and port forwarding. Under the network settings of the VM's NAT network define the following port forwardings:
+The network configuration is a bit more complicated with Virtualbox. What we need is a VM which can reach the outside world and which can be reached from the outside world. In order to achieve this we will need to define in sum 2 virtual networks for our VM. So far we already have defined the NAT (Network Address Translation) network. NAT allows to access the outside workd from a VM. Imagine that your VM is connected to a service which acts like a router whereby the VM can reach the outside world but can NOT be reached from the outside world or from other VM-s. First let's check if yor CentOS6 instance has an IP for the NAT network:
 
-TODO
+```
+/sbin/ifconfig
+```
 
-* Change the VM settings for the NAT network
-  * Network: Enable port forwarding by mapping the host port 9${i}22 to the guest port 22
-  * Network: Enable port forwarding by mapping the host port 9${i}91 to the guest port 8091
-  * Network: Enable port forwarding by mapping the host port 9${i}59 to the guest port 5901
+The IP is usually something like '10.0.2.15'. Each VM ${i} has then usually the same NAT IP. There are no conflicts here because the NAT IP is anyway not accessible from the outside world.
+
+In order to enable access from the outside world via NAT, port forwarding can be used. So to simplify further configuration steps it makes sense to allow the access from the outside world to the VM via NAT and port forwarding. Under the network settings of the VM's NAT network define the following port forwardings:
+
+| Name          | Host port           | Gest port |
+| ------------- |---------------------|---------- |
+| SSH           |9${i}22              | 22        |
+| CB            |9${i}91              | 8091      |
+| VNC           |9${i}59              | 5901      |
+
+
+
 * Configure and check the network
   * Get the current network settings
     * Did you get an IP address assigned? Check via 'ifconfig' and note it as $previous_ip!
