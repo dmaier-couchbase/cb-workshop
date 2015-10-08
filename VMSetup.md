@@ -6,10 +6,10 @@ We are using the following versions of Software for these preperations:
 
 * VirtualBox >4.3: https://www.virtualbox.org/wiki/Downloads
 * CentOS 6.7: http://mirror2.hs-esslingen.de/centos/6.7/isos/x86_64/CentOS-6.7-x86_64-LiveCD.iso
-* Couchbase: http://packages.couchbase.com/releases/4.0.0/couchbase-server-enterprise-4.0.0-centos6.x86_64.rpm
-* Java: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-* Maven: http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
-* Netbeans: https://netbeans.org
+* Couchbase 4.0: http://packages.couchbase.com/releases/4.0.0/couchbase-server-enterprise-4.0.0-centos6.x86_64.rpm
+* Java 8: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+* Maven 3: http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
+* Netbeans 8.0.2: https://netbeans.org
 
 ## Couchbase Server Instance $i
 
