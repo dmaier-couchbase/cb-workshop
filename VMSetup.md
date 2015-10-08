@@ -62,56 +62,110 @@ In order to enable access from the outside world via NAT, port forwarding can be
 | CB            |9${i}91              | 8091      |
 | VNC           |9${i}59              | 5901      |
 
+Let's enable some service in order to allow to connect to them from the outside:
 
+* Enable 'sshd' by executing 
+```
+chkconfig sshd on
+```
+* Reboot to make sure that your settings got applied
+* Run a VNCServer by using the password 'couchbase' and by executing
+```
+vncserver
+```
+* Disable the firewall temp. by executing
+```
+/etc/init.d/iptables stop
+```
 
-* Configure and check the network
-  * Get the current network settings
-    * Did you get an IP address assigned? Check via 'ifconfig' and note it as $previous_ip!
-    * Get the current name sever by using 'cat /etc/resolv.conf' and note it as $previous_dns!
-    * Use the command 'route' to find out what the default gateway is and note it as $previous_gw!
-  * Enable connectivity
-    * Enable 'sshd' by executing 'chkconfig sshd on' and then reboot
-    * Make sure that the Firewall is temp. disabled '/etc/init.d/iptables stop'
-    * Try to connect via ssh or Putty 'ssh root@$vm_host -p 9${i}22'
-    * Run 'vncserver' and use 'couchbase' as the password
-  * Configure a static IP for the NAT network
-    * If you installed from the LiveDVD then NetworkManager is used for the network configuration
-    * Check if NetworkManager is running by executing 'service NetworkManager status'
-    * Connect with a VNCClient to $vm_host:9${i}59
-    * Go to the NetworkManager icon in the upper right corner and right click on it
-    * Choose 'Edit Connections'
-    * Click on 'Edit'
-    * Go to the tab 'IPv4 Settings'
-    * Choose 'Manual' as the method
-    * Add the address '${previous_ip}+10/255.255.255.0/$previous_gw'! 
-       * If the IP ${previous_ip}+10 is already taken then assign the next one and so on.
-       * ${previus_ip}+10 means that you use 10.0.2.25 instead of the previous one which was 10.0.2.15 
-    * Use the $previous_dns as DNS server
-    * Reboot and test if you can still access the machine via SSH and if you can still ping the outside world from the machine
-       * If the port forwarding is no longer working then you might have to adapt it regarding the new static guest IP
-   * Configure a static IP for a second 'Host only' network
-       * Power off the machine
-       * Under settings add 'Adapter 2' and enable it
-       * Select 'Host-only Adapter' as the type
-       * If there is no global host-only network then you need to create it via the general VBox preferences
-       * Power on the maching
-       * Assign a static IP to the machine similar as before but in the range of the Host-only network
-       * Check if you now can directly connect from the host
-       * Check if you now can directly connect from other hosts in the same host-only network
-* In the VM download additional dependencies
-  * Execute 'yum install openssl'
+You should now be able to establish a secure shell connection from the host to the VM via Putty or the following command:
+
+```
+ssh root@localhost -p 9${i}22
+```
+
+The next step is to allow the machine to be connected by other machines in the network because in the exercises we want build a cluster of VM-s here. First we need to add a second network adapter:
+
+* Power off the VM
+* Under the VM settings add 'Adapter 2' and enable it
+* Select 'Host-only Adapter' as the type
+* If there is no global host-only network then you need to create it via the general Virtualbox preferences
+* Power on the maching
+
+Your VM has not 2 network cards. Given that you installed from the LiveCD by default NetworkManager is used. Check if NetworkManager is running by executing:
+
+```
+service NetworkManager status
+```
+
+We need to make sure that our VM uses a static IP address in the host-only network. Before we do this let's find out the current network settings:
+  
+* Did you get an IP address assigned? Check via 'ifconfig' and note it as $previous_ip!
+* Get the current name sever by using 'cat /etc/resolv.conf' and note it as $previous_dns!
+* Use the command 'route' to find out what the default gateway is and note it as $previous_gw!
+ 
+NetworkManager is best configured via the UI.
+
+ * Connect with a VNCClient to the VM, e.g. by using:
+```    
+vncviewer localhost:9${i}59
+```
+* Go to the NetworkManager icon in the upper right corner and right click on it
+* Choose 'Edit Connections'
+* Select the host-only network
+* Click on 'Edit'
+* Go to the tab 'IPv4 Settings'
+* Choose 'Manual' as the method
+* Add the address:
+
+| IP              | Network mask        | Gateway     |
+| -------------   |---------------------|------------ |
+|${previous_ip}+10|255.255.255.0        |$previous_gw |
+
+The IP '${previus_ip}+10' means to use for instance 192.168.56.111 instead of the previous one which was 192.168.56.101. If the IP '${previous_ip}+10' is already taken by another VM then assign the next one and so on.
+
+* Use the '$previous_dns' as DNS server
+* Reboot
+* Check if you can still ping the outside world from the VM
+* Check if you can still connect via SSH to the forwarded port
+* Check if you now can directly connect from other hosts in the same host-only network
+
+### Install Dependencies
+
+In the VM download additional dependencies:
+
+  * Install OpenSSL
+
+```
+yum install openssl
+```
+
   * The package 'wget' is already installed
-  * Download the Couchbase Server RPM and place it under '/root/Downloads' by using wget
+  * Download the Couchbase Server RPM and place it under '/root/Downloads':
+
+```
+mkdir /root/Downloads
+cd /root/Downloads
+wget $cb_package_url
+```
+
+Whereb '$cb_package_url' is the url to the Couchbase package (see above).
 
   
 ## Development Instance
 
-* Perform the same steps as for the Couchbase Server VM-s BUT
+Create this VM with the same VM settings as the other ones, but:
+
    * Name the machine CentOS6-DCJW-Dev 
-   * By performing a graphical installation this time, which means not to choose 'Install text mode' but just 'Install'
-   * Create an user 'couchbase' with password 'couchbase' as part of the setup wizard 
-   * Don't download the same dependencies, other software will be installed
-   * It's especially important that the Development machine is in the same NAT and host-only network
-* Install the Development environment
-   * TODO 
-   * 
+
+We need to install with a graphical user interface for this VM.
+
+* In the boot menu of the LiveCD choose just 'Install'
+* Use the same settings as before, but this time via the GUI
+* If asked for the user creation then create an user 'couchbase' with password 'couchbase'
+
+The network configuration part can be exactly performed as for the other machines before. It's especially important that the Development machine is in the same NAT and host-only network
+
+Don't download the same dependencies, other software will be installed now.
+
+TODO
