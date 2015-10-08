@@ -87,3 +87,4 @@ The starting point for the day 2 execises is the '1' folder. This is basically a
 | 8               | Connection Management                  | ConnectionFactory, Singleton approach |
 | 9               | CRUD Operations                        | Create Documents, Reference Documents, Get Documents |
 | 10              | Querying via Views                     | Create a Design Document, Create View, Query via the Browser and Client |
+| 11              | Querying via N1QL                      | Create a Secondary Index via the CLI, A simple Query, Query by performing a Join |
