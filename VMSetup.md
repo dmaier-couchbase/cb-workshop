@@ -142,7 +142,7 @@ The IP '${previus_ip}+10' means to use for instance 192.168.56.111 instead of th
 * Check if you can still connect via SSH to the forwarded port
 * Check if you now can directly connect from other hosts in the same host-only network
 
-### Install Dependencies
+### Download and/or Install Dependencies
 
 In the VM download additional dependencies:
 
@@ -257,9 +257,4 @@ Now log-in via the graphical user interface as user 'couchbase' and start Netbea
 * The build should complete with 'BUILD SUCCESS'
 * Close the project again!
 * Close Netbeans!
-
-
-
-
-
 
