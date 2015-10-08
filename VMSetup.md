@@ -167,7 +167,7 @@ We need to install with a graphical user interface for this VM.
 * Use the same settings as before, but this time via the GUI
 * If asked for the user creation then create an user 'couchbase' with password 'couchbase'
 
-The network configuration part can be exactly performed as for the other machines before. It's especially important that the Development machine is in the same NAT and host-only network
+The network configuration part can be exactly performed as for the other machines before. It's especially important that the Development machine is in the same host-only network and so a connection between the VM-s is guaranteed.
 
 Don't download the same dependencies, other software will be installed now.
 
