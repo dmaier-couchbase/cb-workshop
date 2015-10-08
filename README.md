@@ -16,7 +16,7 @@ For the second workshop days the following is required:
 
 For both days internet access is required in order to get access to the workshop code repository and other resources.
 
-Please see the file VMSetup.md for further details!
+Please see the file [VMSetup](https://github.com/dmaier-couchbase/cb-workshop/blob/master/VMSetup.md) for further details!
 
 ## Agenda
 
