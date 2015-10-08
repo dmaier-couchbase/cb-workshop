@@ -46,6 +46,7 @@ Please see the file [VMSetup](https://github.com/dmaier-couchbase/cb-workshop/bl
 |                | The 2.x Java API |
 | 12:30          | Lunch |
 |                | Hands-on |
+|                | Specific Use Case presentation |    
 | 17:00          | Q&A and Summary, What's new in 4.0 |
 
 ## Exercises
