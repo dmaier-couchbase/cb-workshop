@@ -56,7 +56,7 @@ public class Main {
         //demoAddUserToComp();
         //demoGetComp();
         //demoQueryUserByDate();
-        demoQueryWithN1QL();
+        //demoQueryWithN1QL();
 
         
         //Wait because the results are returned async.
@@ -210,20 +210,12 @@ public class Main {
      */
     private static void demoQueryWithN1QL() 
     {
+        //Explain: defaultIfEmpty(null)
+        
         UserDao.queryByName("Maier")
                 .subscribe(
                     u -> LOG.log(Level.INFO, "Got user {0}", u.getFirstName()),
                     e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
         );
-        
-       /*
-       UserDao.queryByName("Maier")
-               .subscribe(
-         
-                    s -> LOG.log(Level.INFO, "Result {0}", s) ,
-                    e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
-               
-       );
-       */
     }
 }
