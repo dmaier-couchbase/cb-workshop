@@ -20,12 +20,22 @@ import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.query.N1qlQuery;
+import com.couchbase.client.java.query.Index;
+import com.couchbase.client.java.query.N1qlQueryResult;
+import static com.couchbase.client.java.query.Select.select;
+import com.couchbase.client.java.query.Statement;
+import com.couchbase.client.java.query.dsl.Expression;
+import static com.couchbase.client.java.query.dsl.Expression.x;
 import com.couchbase.client.java.view.ViewQuery;
+import com.couchbase.workshop.cfg.ConfigManager;
+import com.couchbase.workshop.cfg.CouchbaseConfig;
 import com.couchbase.workshop.pojo.User;
 import com.couchbase.workshop.conn.BucketFactory;
 import java.util.Date;
 import java.util.logging.Logger;
 import rx.Observable;
+
 //import rx.functions.Action1;
 //import rx.functions.Func1;
 
@@ -93,7 +103,7 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
     public Observable<User> persist() {
 
         JsonDocument doc = toJson(this.user);
-
+  
         return bucket.upsert(doc)
                      .map(resultDoc -> (User) fromJson(resultDoc));
     }
@@ -166,7 +176,7 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
     }
     
     /**
-     * A helper method to query for users by birthday
+     * A method to query for users by birthday
      * 
      * The following View needs to be defined:
      * 
@@ -227,28 +237,59 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
     }
     
     /**
-     * A helper method to query by name
+     * A method to query by name
      * 
      * The following index is required: CREATE PRIMARY INDEX ON workshop
      * 
      * @param name
      * @return 
      */
-    /*
-    public static Observable<String> queryByName(String name)
+    public static Observable<User> queryByName(String name)
     {
-        StringBuilder q = new StringBuilder("SELECT * FROM workshop");
-        q.append(" WHERE ");
-        q.append(PROP_LASTNAME);
-        q.append(" = ");
-        q.append("'");
-        q.append(name);
-        q.append("'");
-               
-        return bucket.query(q.toString())
-              .flatMap(r -> r.rows())
-              .map(row -> row.value())
-              .map(v -> v.toString());
+        //Make sure that the Primary index is created
+        bucket.query(Index.createPrimaryIndex().on(bucket.name())).toBlocking().single();
+        
+        Statement stmt = select(all())
+                .from(bucket.name())
+                .where(
+                        x(PROP_TYPE).eq("'" + TYPE + "'")
+                       .and(
+                        x(PROP_LASTNAME).eq("'" + name + "'")
+                       )
+                );
+          
              
-    }*/
+        return bucket.query(stmt)
+              .flatMap(result -> result.rows())
+              .map(row -> row.value())
+              .map(v -> new User(v.getString(PROP_UID), v.getString(PROP_FIRSTNAME), 
+                                 v.getString(PROP_LASTNAME), v.getString(PROP_EMAIL),
+                                 new Date(v.getLong(PROP_BDAY))
+                            )
+              );
+    }
+    
+    
+    /**
+     * Just a comma seperated list of all user properties in order to guarantee the order in the result
+     * @return 
+     */
+    private static String all()
+    {
+        String[] props = new String[]{PROP_TYPE, PROP_UID, PROP_FIRSTNAME, PROP_LASTNAME, PROP_EMAIL, PROP_BDAY };
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < props.length; i++) {
+            
+            String prop = props[i];
+            
+            if (i != 0) sb.append(",");
+            
+            sb.append(prop);
+            
+        }
+        
+        return sb.toString();
+    }
 }

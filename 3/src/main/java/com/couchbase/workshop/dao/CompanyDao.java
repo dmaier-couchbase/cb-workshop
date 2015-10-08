@@ -116,6 +116,21 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
                 );
     }
 
+    
+    /**
+     * Queries the company users 
+     * 
+     * @param names
+     * @return 
+     */
+    public static Observable<User> queryUsersByName(String... names)
+    {
+        //TODO
+        return null;
+    }
+    
+    
+    
     /**
      * Returns the Json object from the given Company
      *

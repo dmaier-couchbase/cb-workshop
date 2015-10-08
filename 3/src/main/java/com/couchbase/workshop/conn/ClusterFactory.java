@@ -45,7 +45,7 @@ public class ClusterFactory {
     {
         //Enable N1QL
         if (ConfigManager.getCBConfig().isQueryEnabled())
-            System.setProperty("com.couchbase.queryEnabled", "true");
+            System.setProperty("com.couchbase.queryEnabled", "" + ConfigManager.getCBConfig().isQueryEnabled());
         
         //Create the cluster reference
         String[] hosts = ConfigManager.getCBConfig().getHosts();

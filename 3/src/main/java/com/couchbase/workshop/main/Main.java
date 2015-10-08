@@ -49,18 +49,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         
-        //demoConnect();
+        demoConnect();
         
         //demoCreateUsers();
-        
         //demoCreateCompany();
-        
         //demoAddUserToComp();
-        
         //demoGetComp();
         //demoQueryUserByDate();
-       
-        //demoQueryWithN1QL();
+        demoQueryWithN1QL();
 
         
         //Wait because the results are returned async.
@@ -88,6 +84,8 @@ public class Main {
      * 
      */
     private static void demoCreateUsers() {
+        
+        
         LOG.info("DEMO - Create user");
 
         //Create a user object
@@ -209,9 +207,16 @@ public class Main {
     /**
      * (1) Query by name
      * (2) Logs the result or the error (when an exception occoured)
-     
+     */
     private static void demoQueryWithN1QL() 
     {
+        UserDao.queryByName("Maier")
+                .subscribe(
+                    u -> LOG.log(Level.INFO, "Got user {0}", u.getFirstName()),
+                    e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
+        );
+        
+       /*
        UserDao.queryByName("Maier")
                .subscribe(
          
@@ -219,5 +224,6 @@ public class Main {
                     e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
                
        );
-    }*/
+       */
+    }
 }
