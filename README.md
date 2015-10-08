@@ -16,22 +16,24 @@ For the second workshop days the following is required:
 
 For both days internet access is required in order to get access to the workshop code repository and other resources.
 
+Please see the file [VMSetup](https://github.com/dmaier-couchbase/cb-workshop/blob/master/VMSetup.md) for further details!
+
 ## Agenda
 
 * Day 1
 
-| Time           | Topic                           |
-| -------------- | ------------------------------- |
-| 09:00          | Introduction and Core Use Cases |
-|                | Overview of the Couchbase Server 3.0 Architecture |
-|                | Couchbase Server as a Distributed Systeme |
-| 10:30          | Coffee Break |
-|                | Working with Buckets |
-|                | Working with the Cluster |
-| 12:30          | Lunch |
-|                | Backup and Restore |
-|                | Cross Data Center Replication explained |
-| 17:00          | Q&A and Summary |
+| Time            | Title                                   | 
+| --------------- |  ---------------------------------------|
+| 09:00           | Introduction and Core Use Cases         |
+|                 | Couchbase Server Architecture           |
+|                 | Couchbase Server as a Distributed System|
+| 10:30           | Coffee Break                            |
+|                 | Working with Buckets                    |
+|                 | Working with the Cluster                |
+| 12:30           | Lunch                                   |
+|                 | Security                                |
+|                 | Cross Data Center Replication explained |
+| 17:00           | Q&A and Summary                         |
 
 * Day 2
 
@@ -44,6 +46,7 @@ For both days internet access is required in order to get access to the workshop
 |                | The 2.x Java API |
 | 12:30          | Lunch |
 |                | Hands-on |
+|                | Specific Use Case presentation |    
 | 17:00          | Q&A and Summary, What's new in 4.0 |
 
 ## Exercises
@@ -85,3 +88,4 @@ The starting point for the day 2 execises is the '1' folder. This is basically a
 | 8               | Connection Management                  | ConnectionFactory, Singleton approach |
 | 9               | CRUD Operations                        | Create Documents, Reference Documents, Get Documents |
 | 10              | Querying via Views                     | Create a Design Document, Create View, Query via the Browser and Client |
+| 11              | Querying via N1QL                      | Create a Secondary Index via the CLI, A simple Query, Query by performing a Join |
