@@ -7,6 +7,9 @@ We are using the following versions of Software for these preperations:
 * VirtualBox >4.3: https://www.virtualbox.org/wiki/Downloads
 * CentOS 6.7: http://mirror2.hs-esslingen.de/centos/6.7/isos/x86_64/CentOS-6.7-x86_64-LiveCD.iso
 * Couchbase: http://packages.couchbase.com/releases/4.0.0/couchbase-server-enterprise-4.0.0-centos6.x86_64.rpm
+* Java: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+* Maven: http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
+* Netbeans: https://netbeans.org
 
 ## Couchbase Server Instance $i
 
@@ -149,7 +152,7 @@ cd /root/Downloads
 wget $cb_package_url
 ```
 
-Whereb '$cb_package_url' is the url to the Couchbase package (see above).
+Whereb '$cb_package_url' is the url to the Couchbase package (see link above).
 
   
 ## Development Instance
@@ -168,4 +171,53 @@ The network configuration part can be exactly performed as for the other machine
 
 Don't download the same dependencies, other software will be installed now.
 
-TODO
+### Java 
+
+Download the Java Development Kit from the home page (see link above) and place it under '/root/Downloads'.
+
+* jdk-8u60-linux-x64.rpm
+
+Install it as root via RPM:
+
+```
+rpm -ivh jdk-8u60-linux-x64.rpm
+```
+
+Double check that the right version of Java is now used
+
+```
+which java
+java -version
+```
+
+### Netbeans
+
+Download the Netbeans 8.0.2 from their web site and save it under '/root/Downloads':
+
+* Choose the distribution 'All'
+* netbeans-8.0.2-linux.sh
+
+Perform the installation as root by performing the following steps:
+
+* Make the installation script executable
+```
+chmod +x netbeans-8.0.2-linux.sh
+```
+* Execute the installation script
+```
+./netbeans-8.0.2-linux.sh
+```
+A graphical installation wizard is started
+
+* Click on 'Next'
+* Accecpt the license agreement
+* Accept the license agreement for jUnit
+* Keep the default settings and click on 'Next'
+* Keep the default settings for Glassfish and click on 'Next'
+* Click on 'Install'
+* Wait until the installation is finished
+
+
+
+
+
