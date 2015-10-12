@@ -20,10 +20,12 @@ import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.workshop.pojo.Company;
 import com.couchbase.workshop.conn.BucketFactory;
 import com.couchbase.workshop.pojo.User;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import rx.Observable;
@@ -118,15 +120,40 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
 
     
     /**
-     * Queries the company users 
+     * Queries the company uses by filtering by last name
      * 
-     * @param names
+     * @param comp
+     * @param lastname
      * @return 
      */
-    public static Observable<User> queryUsersByName(String... names)
+    public static Observable<User> queryUsersByName(String comp, String lastname)
     {
-        //TODO
-        return null;
+        String query = "SELECT w.{PROP_NAME}, s.* FROM {bucket} w "
+                     + "JOIN {bucket} s ON KEYS w.{PROP_USERS} "
+                     + "WHERE w.{PROP_TYPE} = '{TYPE}' "
+                     + "AND w.{PROP_ID} = '{id}' "
+                     + "AND s.{PROP_LASTNAME} = '{lastname}'";
+     
+        query = query.replace("{PROP_NAME}", PROP_NAME);
+        query = query.replace("{bucket}", bucket.name());
+        query = query.replace("{PROP_USERS}", PROP_USERS);
+        query = query.replace("{PROP_TYPE}", PROP_TYPE);
+        query = query.replace("{TYPE}", TYPE);
+        query = query.replace("{PROP_ID}", PROP_ID);
+        query = query.replace("{id}", comp);
+        query = query.replace("{PROP_LASTNAME}", UserDao.PROP_LASTNAME);
+        query = query.replace("{lastname}", lastname);
+        
+     
+        return bucket.query(N1qlQuery.simple(query))
+              .flatMap(result -> result.rows())
+              .map(row -> row.value())
+              .map(v -> new User(v.getString(UserDao.PROP_UID), v.getString(UserDao.PROP_FIRSTNAME), 
+                                 v.getString(UserDao.PROP_LASTNAME), v.getString(UserDao.PROP_EMAIL),
+                                 new Date(v.getLong(UserDao.PROP_BDAY))
+                            )
+              );
+        
     }
     
     

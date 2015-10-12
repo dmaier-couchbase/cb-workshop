@@ -20,16 +20,12 @@ import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.client.java.query.Index;
-import com.couchbase.client.java.query.N1qlQueryResult;
 import static com.couchbase.client.java.query.Select.select;
 import com.couchbase.client.java.query.Statement;
-import com.couchbase.client.java.query.dsl.Expression;
 import static com.couchbase.client.java.query.dsl.Expression.x;
+import static com.couchbase.client.java.query.dsl.Expression.i;
 import com.couchbase.client.java.view.ViewQuery;
-import com.couchbase.workshop.cfg.ConfigManager;
-import com.couchbase.workshop.cfg.CouchbaseConfig;
 import com.couchbase.workshop.pojo.User;
 import com.couchbase.workshop.conn.BucketFactory;
 import java.util.Date;
@@ -61,6 +57,7 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
 
     public static final String DDOC_PERSONS = "persons";
     public static final String VIEW_BYBIRTHDAY = "by_birthday";
+    public static final String IDX_BYLASTNAME = "user_by_lastname";
     
     /**
      * Bucket reference
@@ -246,8 +243,6 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
      */
     public static Observable<User> queryByName(String name)
     {
-        //Make sure that the Primary index is created
-        bucket.query(Index.createPrimaryIndex().on(bucket.name())).toBlocking().single();
         
         Statement stmt = select(all())
                 .from(bucket.name())
@@ -291,5 +286,24 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
         }
         
         return sb.toString();
+    }
+    
+    /**
+     * Create the indexes
+     * 
+     * Let's do it synchronous here because in an actual application it would happen
+     * as part of the deployment/startup of the application
+     * @return 
+     */
+    public static boolean createIndexes()
+    {           
+        //A secondary index is an alternative access path
+        boolean success = bucket.query(Index.createIndex(IDX_BYLASTNAME)
+                .on(bucket.name(),i(PROP_LASTNAME))).toBlocking().single()
+                .parseSuccess();
+           
+        
+        return success;
+
     }
 }

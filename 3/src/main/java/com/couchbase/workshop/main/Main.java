@@ -17,6 +17,9 @@
 package com.couchbase.workshop.main;
 
 import com.couchbase.client.java.AsyncBucket;
+import com.couchbase.client.java.Bucket;
+import com.couchbase.client.java.query.Index;
+import static com.couchbase.client.java.query.dsl.Expression.i;
 import com.couchbase.workshop.pojo.User;
 import com.couchbase.workshop.conn.BucketFactory;
 import com.couchbase.workshop.dao.CompanyDao;
@@ -56,8 +59,9 @@ public class Main {
         //demoAddUserToComp();
         //demoGetComp();
         //demoQueryUserByDate();
-        //demoQueryWithN1QL();
-
+        //demoCreateIndexes();
+        //demoQueryWithN1QLSimple();
+        //demoQueryWithN1QLJoin();
         
         //Wait because the results are returned async.
         Thread.sleep(60000);
@@ -205,14 +209,51 @@ public class Main {
     }
     
     /**
+     * (1) Create the user indexes
+     * (2) Create the company indexes
+     */
+    private static void demoCreateIndexes()
+    {
+        Bucket bucket =  BucketFactory.getBucket();
+        
+        //Primary index is necessary at all
+        boolean piCreated = bucket.query(Index.createPrimaryIndex().on(bucket.name()))
+                .parseSuccess();
+        
+        LOG.log(Level.INFO, "Primary Index created = {0}", piCreated);
+        
+        
+       boolean tiCreated = bucket.query(Index.createIndex("by_type").on(bucket.name(), 
+                i("type")))
+                .parseSuccess();
+        
+        LOG.log(Level.INFO, "Type Index created = {0}", tiCreated);
+        
+        LOG.log(Level.INFO, "User Indexes created = {0}", UserDao.createIndexes());
+    }
+    
+    /**
      * (1) Query by name
      * (2) Logs the result or the error (when an exception occoured)
      */
-    private static void demoQueryWithN1QL() 
+    private static void demoQueryWithN1QLSimple() 
     {
-        //Explain: defaultIfEmpty(null)
+        //Explain: defaultIfEmpty(null)!
         
         UserDao.queryByName("Maier")
+                .subscribe(
+                    u -> LOG.log(Level.INFO, "Got user {0}", u.getFirstName()),
+                    e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
+        );
+    }
+    
+    /**
+     * (1) Query by name via the company
+     * (2) Logs the result or the error (when an exception occoured)
+     */
+    private static void demoQueryWithN1QLJoin() 
+    {        
+        CompanyDao.queryUsersByName("couchbase", "Maier")
                 .subscribe(
                     u -> LOG.log(Level.INFO, "Got user {0}", u.getFirstName()),
                     e -> LOG.log(Level.SEVERE, "Could not query for users!: {0}", e.toString())
