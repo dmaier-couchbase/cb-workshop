@@ -133,7 +133,7 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
                      + "WHERE w.{PROP_TYPE} = '{TYPE}' "
                      + "AND w.{PROP_ID} = '{id}' "
                      + "AND s.{PROP_LASTNAME} = '{lastname}'";
-     
+             
         query = query.replace("{PROP_NAME}", PROP_NAME);
         query = query.replace("{bucket}", bucket.name());
         query = query.replace("{PROP_USERS}", PROP_USERS);
@@ -143,6 +143,13 @@ public class CompanyDao extends AJsonSerializable implements IAsyncDao {
         query = query.replace("{id}", comp);
         query = query.replace("{PROP_LASTNAME}", UserDao.PROP_LASTNAME);
         query = query.replace("{lastname}", lastname);
+     
+        /*
+        FYI: The params in the WHERE clause can be parameterized
+        e.g.: WHERE w.type = '$ptype' AND w.id = '$pid' AND 's.lastname' = '$plastname'
+        JsonObject placeholderValues = JsonObject.create().put("ptype", "value");
+        q = N1qlQuery.parameterized(queryStr_Or_Stmt, placeholderValues);
+        */
         
      
         return bucket.query(N1qlQuery.simple(query))

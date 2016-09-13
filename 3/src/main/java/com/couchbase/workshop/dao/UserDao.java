@@ -204,11 +204,11 @@ public class UserDao extends AJsonSerializable implements IAsyncDao {
         if (to != null)
             q = q.endKey(dateToDateArr(to));
         
+        //Side note: Changed since the last workshop
         return  
               bucket.query(q)  
               .flatMap(r -> r.rows())
-              .flatMap(row -> row.document())
-              .map(d -> d.id())
+              .map(row -> row.id())
               .map(i -> i.split("::")[1])
               .flatMap(i -> DAOFactory.createUserDao(i).get());             
     }
